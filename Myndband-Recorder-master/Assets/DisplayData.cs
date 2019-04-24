@@ -9,10 +9,13 @@ using UnityEngine.UI;
 using System.Diagnostics;
 
 public class DisplayData : MonoBehaviour
-{	
-  	[SerializeField]
-    private Text myndbandStatus;
+{
+    
+    public bool IsBlinked;
 
+    [SerializeField]
+    private Text myndbandStatus;
+    
   	[SerializeField]
     private Text myndbandSubStatus;
 
@@ -44,29 +47,42 @@ public class DisplayData : MonoBehaviour
 
 	private Stopwatch timer;
 
+    /* void Start()
+     {
+         timer = new Stopwatch();
+         controller = GameObject.Find("MyndbandManager").GetComponent<MyndbandManager>();	
+         MyndbandManager.UpdateRawdataEvent += OnUpdateRawDataEvent;
+         MyndbandManager.UpdateLowAlphaEvent += OnUpdateLowAlpha;
+         MyndbandManager.UpdateHighAlphaEvent += OnUpdateHighAlpha;
+         MyndbandManager.UpdateLowBetaEvent += OnUpdateLowBeta;
+         MyndbandManager.UpdateHighBetaEvent += OnUpdateHighBeta;
+         MyndbandManager.UpdateLowGammaEvent += OnUpdatelowGamma;
+         MyndbandManager.UpdateHighGammaEvent += OnUpdatehighGamma;
+         MyndbandManager.UpdateBlinkEvent += OnBlinkDetected;
+     }*/
     void Start()
     {
-		timer = new Stopwatch();
-		controller = GameObject.Find("MyndbandManager").GetComponent<MyndbandManager>();	
-		MyndbandManager.UpdateRawdataEvent += OnUpdateRawDataEvent;
-		MyndbandManager.UpdateLowAlphaEvent += OnUpdateLowAlpha;
-		MyndbandManager.UpdateHighAlphaEvent += OnUpdateHighAlpha;
-		MyndbandManager.UpdateLowBetaEvent += OnUpdateLowBeta;
-		MyndbandManager.UpdateHighBetaEvent += OnUpdateHighBeta;
-		MyndbandManager.UpdateLowGammaEvent += OnUpdatelowGamma;
-		MyndbandManager.UpdateHighGammaEvent += OnUpdatehighGamma;
-		MyndbandManager.UpdateBlinkEvent += OnBlinkDetected;
+        timer = new Stopwatch();
+        controller = GameObject.Find("MyndbandManager").GetComponent<MyndbandManager>();
+        MyndbandManager.UpdateRawdataEvent += OnUpdateRawDataEvent;
+        MyndbandManager.UpdateLowAlphaEvent += OnUpdateLowAlpha;
+        MyndbandManager.UpdateHighAlphaEvent += OnUpdateHighAlpha;
+        MyndbandManager.UpdateLowBetaEvent += OnUpdateLowBeta;
+        MyndbandManager.UpdateHighBetaEvent += OnUpdateHighBeta;
+        MyndbandManager.UpdateLowGammaEvent += OnUpdatelowGamma;
+        MyndbandManager.UpdateHighGammaEvent += OnUpdatehighGamma;
+        MyndbandManager.UpdateBlinkEvent += OnBlinkDetected;
     }
 
-	public void updateMyndbandStatus(string newStatus, string subStatus) {
+    public void updateMyndbandStatus(string newStatus, string subStatus) {
 		myndbandStatus.text = newStatus;
 		myndbandSubStatus.text = subStatus;
 	}
 
-	void Update() {
-		systemTime.text = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff");
+	/*void Update() {
+        systemTime.text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff");
 		bigTimer.text = timer.Elapsed.ToString("G");
-	}
+	}*/
 
     void OnUpdateRawDataEvent(int value) {
         rawEEG.text = value.ToString();
@@ -95,12 +111,16 @@ public class DisplayData : MonoBehaviour
 		blinkDetected.text = "Blink Detected! (" + value.ToString() + ")";
 		StopCoroutine("showBlinkDetection");
 		StartCoroutine("showBlinkDetection");
-	}
+        IsBlinked = true;
+
+
+    }
 
 	private IEnumerator showBlinkDetection() {
 		blinkDetected.gameObject.SetActive(true);
 		yield return new WaitForSeconds(1.5f);
 		blinkDetected.gameObject.SetActive(false);
+
 	}
 
 	public void StartStopWatch() {
