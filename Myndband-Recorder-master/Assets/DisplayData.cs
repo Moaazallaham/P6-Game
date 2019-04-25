@@ -11,7 +11,7 @@ using System.Diagnostics;
 public class DisplayData : MonoBehaviour
 {
     
-    public bool IsBlinked;
+  
 
     [SerializeField]
     private Text myndbandStatus;
@@ -111,7 +111,7 @@ public class DisplayData : MonoBehaviour
 		blinkDetected.text = "Blink Detected! (" + value.ToString() + ")";
 		StopCoroutine("showBlinkDetection");
 		StartCoroutine("showBlinkDetection");
-        IsBlinked = true;
+        
 
 
     }

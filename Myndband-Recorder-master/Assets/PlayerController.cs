@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jumpForce;
     private float moveInput;
-
+    public bool IsBlinked;
     private bool facingRight = true;
 
     private bool isGrounded;
@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
         extraJumps = extraJumpValue;
         rb = GetComponent<Rigidbody2D>();
+        MyndbandManager.UpdateBlinkEvent += blinkDetected;
 
     }
     void FixedUpdate()
@@ -56,20 +57,28 @@ public class PlayerController : MonoBehaviour
         {
             extraJumps = extraJumpValue;
         }
-       
-        //if (Input.GetKeyDown(KeyCode.UpArrow) && extraJumps > 0)
-         if(dataInfo.IsBlinked && extraJumps >0)
-        {
 
+       
+        if (Input.GetKeyDown(KeyCode.UpArrow) && extraJumps > 0)
+       //  if(IsBlinked && extraJumps >0)
+        {
+           // Debug.Log("test");
             //if (GameObject.Find ("MyndController").GetComponent < "MyndBandManager" >().OnBlinkDetected);
             rb.velocity = Vector2.up * jumpForce;
             extraJumps--;
-            dataInfo.IsBlinked = false;
+            IsBlinked = false;
 
 
         } else if (Input.GetKeyDown(KeyCode.UpArrow) && extraJumps == 0 && isGrounded== true)
         {
             rb.velocity = Vector2.up * jumpForce;
         }
+        
+    }
+    void blinkDetected(int value)
+    {
+        IsBlinked = true;
+        Debug.Log("test");
+        
     }
 }
